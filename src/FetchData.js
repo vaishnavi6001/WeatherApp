@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import  { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 
 const FetchData = (url) => {
     const APIkey = 'fb86174eff0d7d1c441ae13cf5cfa154';
@@ -45,7 +47,6 @@ const FetchData = (url) => {
         setPrecipitation(round(parseFloat(data.list[0].pop)*100));
         setHumidity(data.list[0].main.humidity);
         setWindspeed(round(parseFloat(data.list[0].wind.speed)*18/5));
-    
     })
     },[cityname])
 
@@ -54,7 +55,7 @@ return (
           <div className="box1">
             <h1 id="day" className="topspace">{alldays[days[0]]}</h1>
             <p id="date">{date + " " + months[month] + " " + year}</p>
-            <p /><p id="location"><React.Fragment><i className="fas fa-map-marker-alt" /> {`${<i className="fas fa-map-marker-alt"></i>} ` + City + ", " + country}</p><p />
+            <p /><p id="location"><FontAwesomeIcon icon={faMapMarkerAlt} /> {City + ", " + country}</p><p />
             <div className="b1bottom">
               <p id="icon"><img src={`${icon[0]}`} style={{height:"140px", width:"140px"}} /></p>
               <h1 id="temp">{Temp[0]} &deg;C</h1>
@@ -68,10 +69,10 @@ return (
               <span><p><b>WIND</b></p><p id="windspeed">{windspeed + " km/h"}</p></span>
             </div>
             <div className="columns">
-              <p id="col1">present day</p>
-              <p id="col2">present day+1</p>
-              <p id="col3">present day+2</p>
-              <p id="col4">present day+3</p>
+              <p id="col1"><span><img src={`${icon[0]}`} /></span><span>{dayshort[days[0]]}</span><span><b>{Temp[0]} &deg;C</b></span></p>
+              <p id="col2"><span><img src={`${icon[1]}`} /></span><span>{dayshort[days[1]]}</span><span><b>{Temp[1]} &deg;C</b></span></p>
+              <p id="col3"><span><img src={`${icon[2]}`} /></span><span>{dayshort[days[2]]}</span><span><b>{Temp[2]} &deg;C</b></span></p>
+              <p id="col4"><span><img src={`${icon[3]}`} /></span><span>{dayshort[days[3]]}</span><span><b>{Temp[3]} &deg;C</b></span></p>
             </div>
             <div className="loc">
               <button id="changeloc">Change location</button>
