@@ -1,13 +1,157 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+html {
+  font-family: 'Montserrat', sans-serif;
+  background-color: rgb(46, 55, 68);
+  color: white;
 }
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.main {
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+}
+header{
+  height: 100px;
+  text-align: center;
+}
+#city{
+  background-color: rgb(19, 18, 17);
+  border-radius: 8px;
+  color: white;
+}
+#error{
+  margin-top: 0px;
+  font-size: 0.8em;
+  color: red;
+}
+header button{
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+  background-color: rgb(50, 169, 199);
+  border-radius: 8px;
+}
+.topspace{
+  padding-top: 30px;
+}
+h2, h1, p {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+p:first-letter, h1::first-letter, h2:first-letter {
+  text-transform: capitalize;
+}
+.box1 {
+  background-color: rgb(36, 194, 241);
+  background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.986),rgba(87, 122, 219, 0.829)), url("https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/rhodeisland/140_3_0527_jpeg_62832804-29ac-4b9d-bd6f-039bc470b818.jpg");
+  width: 400px;
+  height: 550px;
+  border-radius: 25px;
+  animation: myanimation 10s infinite;
+}
+@keyframes myanimation{
+  0%{
+      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.986),rgba(87, 122, 219, 0.829)), url("https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/rhodeisland/140_3_0527_jpeg_62832804-29ac-4b9d-bd6f-039bc470b818.jpg");
+  }
+  25%{
+      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.986),rgba(87, 122, 219, 0.829)), url("https://i.guim.co.uk/img/media/6088d89032f8673c3473567a91157080840a7bb8/413_955_2808_1685/master/2808.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=412cc526a799b2d3fff991129cb8f030");
+  }
+  50%{
+      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.986),rgba(87, 122, 219, 0.829)), url("https://www.freewalldownload.com/mountain-wallpapers/moon-and-blue-ice-mountains-full-hd-nature-wallpaper-for-laptop.jpg");
+  }
+  75%{
+      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.986),rgba(87, 122, 219, 0.829)), url("https://i.pinimg.com/originals/7f/a7/bb/7fa7bb83f07e1eb17e768b3d6dabbef7.jpg");
+  }
+}
+.b1bottom {
+  margin-top: 80px;
+}
+#day{
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 700;
+  font-size: 2.5em;
+}
+#date{
+  margin-top: 0;
+  font-weight: 500;
+  font-size: 1.3em;
+}
+#location{
+  font-weight: 500;
+  font-size: 1.3em;
+}
+#temp {
+  font-weight: 700;
+  margin-top: -30px;
+  margin-bottom: 0;
+  font-size: 5em;
+}
+#icon{
+  padding-left: 0;
+}
+.box2 {
+  background-color: rgb(27, 35, 46);
+  width: 450px;
+  height: 500px;
+  border-radius: 15px;
+}
+.prop p{
+  font-size: 1.1em;
+  height: 0em;
+}
+.prop p:nth-child(odd){
+  font-weight: 700;
+}
+.prop p:nth-child(even){
+  font-weight: 600;
+}
+span {
+  display: flex;
+  justify-content: space-between;
+}
+.columns {
+  display: flex;
+  flex-direction: row;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 40px;
+}
+.columns p{
+  padding-left: 0;
+  padding-right: 0;
+  border-radius: 10px;
+  background-color: rgb(34, 45, 58);
+  height: 150px;
+  width: 100px;
+}
+.columns span{
+  justify-content: center;
+}
+.columns span:first-child{
+  padding-left: 10px;
+  height: 80px;
+  width: 80px;
+}
+.columns span:nth-child(2){
+  padding-bottom: 15px;
+}
+.columns p:first-child{
+  background-color: rgb(147, 179, 238);
+  color: black;
+}
+.loc{
+  margin-top: 40px;
+  text-align: center;
+}
+.loc button {
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+  width: 300px;
+  height: 3em;
+  border-radius: 20px;
+  background: -webkit-linear-gradient(to right, rgb(62, 212, 250),rgb(60, 46, 243));
+  background: -o-linear-gradient(to right, rgb(62, 212, 250),rgb(60, 46, 243));
+  background: -moz-linear-gradient(to right, rgb(62, 212, 250),rgb(60, 46, 243)); 
+  background: linear-gradient(to right, rgb(62, 212, 250),rgb(60, 46, 243));
+}
+footer{
+  height: 50px;
 }
