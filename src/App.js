@@ -1,4 +1,3 @@
-import SearchBar from './SearchBar';
 import MetaData from './MetaData';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import Body from './Body.js';
@@ -10,7 +9,6 @@ function App() {
       <div className="App">
         <div>
           <MetaData />
-          <SearchBar />
           <FetchData />
           <footer />
         </div>

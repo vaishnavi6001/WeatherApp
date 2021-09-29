@@ -39,6 +39,7 @@ const Body = () => {
     let windspeed = round(parseFloat(data.list[0].wind.speed)*18/5);
 
     return ( 
+      <div>
         <div className="main">
           <div className="box1">
             <h1 id="day" className="topspace">{alldays[days[0]]}</h1>
@@ -67,6 +68,7 @@ const Body = () => {
             </div>
           </div>
         </div>
+      </div>
     );
 }
  
