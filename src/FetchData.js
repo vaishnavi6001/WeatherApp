@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import  { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadString} from "firebase/storage";
-import { GoogleAuthProvider } from "firebase/auth";
-import { getAuth, signInWithPopup } from "firebase/auth";
+// import { GoogleAuthProvider } from "firebase/auth";
+// import { getAuth, signInWithPopup } from "firebase/auth";
+
+
 
 const FetchData = () => {
     const APIkey = 'fb86174eff0d7d1c441ae13cf5cfa154';
@@ -86,14 +88,26 @@ const FetchData = () => {
     }
 
     function changeLocation(){
-        setCityName(document.getElementById('city').value);
-        setURL(`https://api.openweathermap.org/data/2.5/forecast?q=${cityname}&appid=${APIkey}`);
-        const storageRef = ref(storage, cityname);
+        setURL(`https://api.openweathermap.org/data/2.5/forecast?q=${document.getElementById('city').value}&appid=${APIkey}`);
+    }
+
+    function storeData(){
+        console.log(document.getElementById('city').value);
+        if(document.getElementById('city').value == ''){
+            const storageRef = ref(storage, cityname);
+            uploadString(storageRef, cityname + `\nUser's location:- latitude:{latitude}, longitude:{longitude},`)
+            .then((see) => {
+                console.log("uploaded name! "+ cityname);
+            });
+        }
+        else{
+            const storageRef = ref(storage, document.getElementById('city').value);
+            uploadString(storageRef, document.getElementById('city').value + `\nUser's location:- latitude:{latitude}, longitude:{longitude},`)
+            .then((see) => {
+                console.log("uploaded name! "+document.getElementById('city').value);
+            });
+        }
         
-        uploadString(storageRef, cityname + `\nUser's location:- latitude:{latitude}, longitude:{longitude},`)
-        .then((see) => {
-            console.log("uploaded name! "+cityname);
-        });
     }
 
     useEffect(()=> {
@@ -101,6 +115,7 @@ const FetchData = () => {
     .then(res=>res.json())
     .then(data=>{
         console.log(data);
+        setCityName(document.getElementById('city').value);
         setTemp([Math.round(parseFloat(data.list[0].main.temp)-273.15), Math.round(parseFloat(data.list[8].main.temp)-273.15), Math.round(parseFloat(data.list[16].main.temp)-273.15), Math.round(parseFloat(data.list[24].main.temp)-273.15)]);
         setDescription(data.list[0].weather[0].description);
         setCity(data.city.name);
@@ -109,12 +124,12 @@ const FetchData = () => {
         setPrecipitation(round(parseFloat(data.list[0].pop)*100));
         setHumidity(data.list[0].main.humidity);
         setWindspeed(round(parseFloat(data.list[0].wind.speed)*18/5));
+        storeData();
     });
     },[url])
 
 return (
     <div>
-
         <header>
           <datalist id="pastSearches">
             <option value />
@@ -123,7 +138,7 @@ return (
             <option value />
             <option value />
           </datalist>
-          <p>Enter city name  <input id="city" type="text" name="city" list="pastSearches" />  <button id="search" onDoubleClick={changeLocation}>Search</button></p>
+          <p>Enter city name  <input id="city" type="text" name="city" list="pastSearches" />  <button id="search" onClick={changeLocation}>Search</button></p>
           <p id="error" />
         </header>
         <div className="main">
