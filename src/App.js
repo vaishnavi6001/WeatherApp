@@ -1,7 +1,7 @@
 import MetaData from './MetaData';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import FetchData from './FetchData';
-// import firebase from "firebase";
+// import firebase from "firebase/app";
 // import { StyledFirebaseAuth } from "react-firebaseui";
 
 function App() {

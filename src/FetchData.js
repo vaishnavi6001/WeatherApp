@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import  { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
 import { initializeApp } from "firebase/app";
-import { getStorage, ref, uploadString} from "firebase/storage";
-// import { GoogleAuthProvider } from "firebase/auth";
-// import { getAuth, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore"; 
 
-
+let latitude = 0;
+let longitude = 0;
 
 const FetchData = () => {
+    const locationKey = 'AIzaSyC26HOI2iJAnrB8sbL9UYZq8fskW8fqKzc';
     const APIkey = 'fb86174eff0d7d1c441ae13cf5cfa154';
     const firebaseConfig = {
         apiKey: "AIzaSyA-ELe2Fwwm2v52SPR7WlFaW61CRKsBjEI",
@@ -19,33 +21,36 @@ const FetchData = () => {
         appId: "1:733075646066:web:559d69c655e69f67f344eb",
         measurementId: "G-96FD2HLL2G"
       };
-
     const app = initializeApp(firebaseConfig);
-    const storage = getStorage();
-    // const provider = new GoogleAuthProvider();
-    // const auth = getAuth();
-    // auth.languageCode = 'it';
-    // provider.setCustomParameters({
-    //     'login_hint': 'user@campus_name.bits-pilani.ac.in'
-    //   });
+
+    //const firebase = require("firebase");
+    require("firebase/firestore");
+    const db = getFirestore();
+    const provider = new GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    provider.setCustomParameters({
+        'login_hint': 'user@example.com'
+      });
+
+    //   const auth = getAuth();
     //   signInWithPopup(auth, provider)
-    //   .then((result) => {
-    //     // This gives you a Google Access Token. You can use it to access the Google API.
-    //     const credential = provider.credentialFromResult(result);
-    //     const token = credential.accessToken;
-    //     // The signed-in user info.
-    //     const user = result.user;
-    //     // ...
-    //   }).catch((error) => {
-    //     // Handle Errors here.
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     // The email of the user's account used.
-    //     const email = error.email;
-    //     // The AuthCredential type that was used.
-    //     // const credential = provider.credentialFromError(error);
-    //     // ...
-    //   });
+    //     .then((result) => {
+    //       // This gives you a Google Access Token. You can use it to access the Google API.
+    //       const credential = GoogleAuthProvider.credentialFromResult(result);
+    //       const token = credential.accessToken;
+    //       // The signed-in user info.
+    //       const user = result.user;
+    //       // ...
+    //     }).catch((error) => {
+    //       // Handle Errors here.
+    //       const errorCode = error.code;
+    //       const errorMessage = error.message;
+    //       // The email of the user's account used.
+    //       const email = error.email;
+    //       // The AuthCredential type that was used.
+    //       const credential = GoogleAuthProvider.credentialFromError(error);
+    //       // ...
+    //     });
 
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
     const alldays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -62,7 +67,7 @@ const FetchData = () => {
         day++;
     }
     const [cityname, setCityName] = useState('Paris');
-    const [url, setURL] = useState(`https://api.openweathermap.org/data/2.5/forecast?q=${cityname}&appid=${APIkey}`);
+    const [urlWeather, setURLWeather] = useState(`https://api.openweathermap.org/data/2.5/forecast?q=${cityname}&appid=${APIkey}`);
     const [Temp,setTemp] = useState('');
     const [description,setDescription] = useState('');
     const [icon,setIcon] = useState('');
@@ -71,6 +76,8 @@ const FetchData = () => {
     const [precipitation, setPrecipitation] = useState('');
     const [humidity, setHumidity] = useState('');
     const [windspeed, setWindspeed] = useState('');
+    const [urlCity, setURLCity] = useState(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${locationKey}`);
+    let city1 = '';
 
     function round(num){
         return num.toPrecision(3);
@@ -82,36 +89,53 @@ const FetchData = () => {
     }
 
     function showPosition(position){
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        setURL(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${APIkey}`);
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+        setURLWeather(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${APIkey}`);
+    }
+
+    async function showPosition1(position){
+        latitude = await position.coords.latitude;
+        longitude = position.coords.longitude;
+        console.log(latitude, longitude);
+        if(document.getElementById('city').value == ''){
+            try {
+                
+                const docRef = await addDoc(collection(db, "users"), {
+                  LastSearch: city1,
+                  UserLocationLatitude: latitude,
+                  UserLocationLongitude: longitude
+                });
+                console.log("Document written with ID: ", docRef.id);
+              } catch (e) {
+                console.error("Error adding document: ", e);
+              }
+        }
+        else{
+            try {
+                const docRef = await addDoc(collection(db, "users"), {
+                  LastSearch: `${document.getElementById('city').value}`,
+                  UserLocationLatitude: latitude,
+                  UserLocationLongitude: longitude
+                });
+                console.log("Document written with ID: ", docRef.id);
+              } catch (e) {
+                console.error("Error adding document: ", e);
+              }
+        }
     }
 
     function changeLocation(){
-        setURL(`https://api.openweathermap.org/data/2.5/forecast?q=${document.getElementById('city').value}&appid=${APIkey}`);
+        setURLWeather(`https://api.openweathermap.org/data/2.5/forecast?q=${document.getElementById('city').value}&appid=${APIkey}`);
     }
 
-    function storeData(){
+    async function storeData(){
         console.log(document.getElementById('city').value);
-        if(document.getElementById('city').value == ''){
-            const storageRef = ref(storage, cityname);
-            uploadString(storageRef, cityname + `\nUser's location:- latitude:{latitude}, longitude:{longitude},`)
-            .then((see) => {
-                console.log("uploaded name! "+ cityname);
-            });
-        }
-        else{
-            const storageRef = ref(storage, document.getElementById('city').value);
-            uploadString(storageRef, document.getElementById('city').value + `\nUser's location:- latitude:{latitude}, longitude:{longitude},`)
-            .then((see) => {
-                console.log("uploaded name! "+document.getElementById('city').value);
-            });
-        }
-        
+        navigator.geolocation.getCurrentPosition(showPosition1);
     }
 
     useEffect(()=> {
-    fetch(url)
+    fetch(urlWeather)
     .then(res=>res.json())
     .then(data=>{
         console.log(data);
@@ -119,6 +143,7 @@ const FetchData = () => {
         setTemp([Math.round(parseFloat(data.list[0].main.temp)-273.15), Math.round(parseFloat(data.list[8].main.temp)-273.15), Math.round(parseFloat(data.list[16].main.temp)-273.15), Math.round(parseFloat(data.list[24].main.temp)-273.15)]);
         setDescription(data.list[0].weather[0].description);
         setCity(data.city.name);
+        city1 = data.city.name;
         setCountry(data.city.country);
         setIcon([`http://openweathermap.org/img/wn/${data.list[0].weather[0].icon}@2x.png`, `http://openweathermap.org/img/wn/${data.list[8].weather[0].icon}@2x.png`, `http://openweathermap.org/img/wn/${data.list[16].weather[0].icon}@2x.png`, `http://openweathermap.org/img/wn/${data.list[24].weather[0].icon}@2x.png`]);
         setPrecipitation(round(parseFloat(data.list[0].pop)*100));
@@ -126,7 +151,15 @@ const FetchData = () => {
         setWindspeed(round(parseFloat(data.list[0].wind.speed)*18/5));
         storeData();
     });
-    },[url])
+    },[urlWeather])
+
+    useEffect(() => {
+        fetch(urlCity)
+        .then(response=>response.json())
+        .then(locData=>{
+            console.log(locData);
+        });
+    }, [urlCity])
 
 return (
     <div>
