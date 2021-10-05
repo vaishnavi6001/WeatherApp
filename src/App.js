@@ -1,7 +1,6 @@
 import MetaData from './MetaData';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 import FetchData from './FetchData';
-import Navbar from './Navbar';
 import { Link } from 'react-router-dom';
 import {GoogleLogin, GoogleLogout} from 'react-google-login';
 import {useState} from "react";
