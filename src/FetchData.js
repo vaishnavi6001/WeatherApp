@@ -1,56 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import  { faMapMarkerAlt } from "@fortawesome/free-solid-svg-icons";
+import MapboxAutocomplete from 'react-mapbox-autocomplete';
 import { initializeApp } from "firebase/app";
-import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { collection, addDoc } from "firebase/firestore"; 
+require('dotenv').config();
 
 let latitude = 0;
 let longitude = 0;
 
 const FetchData = () => {
-    const locationKey = 'AIzaSyC26HOI2iJAnrB8sbL9UYZq8fskW8fqKzc';
-    const APIkey = 'fb86174eff0d7d1c441ae13cf5cfa154';
+    const [placeName, setPlaceName] = useState('');
+    const mapboxAPIkey = process.env.REACT_APP_MAPBOX_API_KEY;
+    console.log(mapboxAPIkey);
+
+    const APIkey = process.env.REACT_APP_API_KEY;
     const firebaseConfig = {
-        apiKey: "AIzaSyA-ELe2Fwwm2v52SPR7WlFaW61CRKsBjEI",
-        authDomain: "weather-app-c5b0f.firebaseapp.com",
-        projectId: "weather-app-c5b0f",
-        storageBucket: "weather-app-c5b0f.appspot.com",
-        messagingSenderId: "733075646066",
-        appId: "1:733075646066:web:559d69c655e69f67f344eb",
-        measurementId: "G-96FD2HLL2G"
+        apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+        authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+        projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+        storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+        messagingSenderId: process.env.REACT_APP_FIREBASE_SENDER_ID,
+        appId: process.env.REACT_APP_FIREBASE_APP_ID,
+        measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
       };
     const app = initializeApp(firebaseConfig);
-
-    //const firebase = require("firebase");
     require("firebase/firestore");
     const db = getFirestore();
-    const provider = new GoogleAuthProvider();
-    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-    provider.setCustomParameters({
-        'login_hint': 'user@example.com'
-      });
-
-    //   const auth = getAuth();
-    //   signInWithPopup(auth, provider)
-    //     .then((result) => {
-    //       // This gives you a Google Access Token. You can use it to access the Google API.
-    //       const credential = GoogleAuthProvider.credentialFromResult(result);
-    //       const token = credential.accessToken;
-    //       // The signed-in user info.
-    //       const user = result.user;
-    //       // ...
-    //     }).catch((error) => {
-    //       // Handle Errors here.
-    //       const errorCode = error.code;
-    //       const errorMessage = error.message;
-    //       // The email of the user's account used.
-    //       const email = error.email;
-    //       // The AuthCredential type that was used.
-    //       const credential = GoogleAuthProvider.credentialFromError(error);
-    //       // ...
-    //     });
 
     const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'];
     const alldays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -66,17 +43,16 @@ const FetchData = () => {
         days.push(day);
         day++;
     }
-    const [cityname, setCityName] = useState('Paris');
-    const [urlWeather, setURLWeather] = useState(`https://api.openweathermap.org/data/2.5/forecast?q=${cityname}&appid=${APIkey}`);
+    const [City, setCity] = useState('Hyderabad');
+    const [urlWeather, setURLWeather] = useState(`https://api.openweathermap.org/data/2.5/forecast?q=${City}&appid=${APIkey}`);
     const [Temp,setTemp] = useState('');
     const [description,setDescription] = useState('');
     const [icon,setIcon] = useState('');
-    const [City, setCity] = useState('');
     const [country, setCountry] = useState('');
     const [precipitation, setPrecipitation] = useState('');
     const [humidity, setHumidity] = useState('');
     const [windspeed, setWindspeed] = useState('');
-    const [urlCity, setURLCity] = useState(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${locationKey}`);
+
     let city1 = '';
 
     function round(num){
@@ -85,7 +61,6 @@ const FetchData = () => {
 
     function getMyLocation(){
         navigator.geolocation.getCurrentPosition(showPosition);
-        document.getElementById('city').value = '';
     }
 
     function showPosition(position){
@@ -96,50 +71,43 @@ const FetchData = () => {
 
     async function showPosition1(position){
         latitude = await position.coords.latitude;
-        longitude = position.coords.longitude;
+        longitude = await position.coords.longitude;
         console.log(latitude, longitude);
-        if(document.getElementById('city').value == ''){
             try {
-                
+              fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${mapboxAPIkey}`)
+              .then(response => response.json())
+              .then(data => {
+                console.log(data);
+                setPlaceName(data.features[0].place_name);
+                console.log(placeName);
+              });
                 const docRef = await addDoc(collection(db, "users"), {
                   LastSearch: city1,
+                  UserCity: placeName,
                   UserLocationLatitude: latitude,
-                  UserLocationLongitude: longitude
+                  UserLocationLongitude: longitude,
                 });
                 console.log("Document written with ID: ", docRef.id);
               } catch (e) {
                 console.error("Error adding document: ", e);
               }
-        }
-        else{
-            try {
-                const docRef = await addDoc(collection(db, "users"), {
-                  LastSearch: `${document.getElementById('city').value}`,
-                  UserLocationLatitude: latitude,
-                  UserLocationLongitude: longitude
-                });
-                console.log("Document written with ID: ", docRef.id);
-              } catch (e) {
-                console.error("Error adding document: ", e);
-              }
-        }
-    }
-
-    function changeLocation(){
-        setURLWeather(`https://api.openweathermap.org/data/2.5/forecast?q=${document.getElementById('city').value}&appid=${APIkey}`);
     }
 
     async function storeData(){
-        console.log(document.getElementById('city').value);
         navigator.geolocation.getCurrentPosition(showPosition1);
     }
+
+    function _suggestionSelect(result, lat, lng, text) {
+      console.log(result, lat, lng, text);
+      setURLWeather(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lng}&appid=${APIkey}`);
+    }
+    
 
     useEffect(()=> {
     fetch(urlWeather)
     .then(res=>res.json())
     .then(data=>{
         console.log(data);
-        setCityName(document.getElementById('city').value);
         setTemp([Math.round(parseFloat(data.list[0].main.temp)-273.15), Math.round(parseFloat(data.list[8].main.temp)-273.15), Math.round(parseFloat(data.list[16].main.temp)-273.15), Math.round(parseFloat(data.list[24].main.temp)-273.15)]);
         setDescription(data.list[0].weather[0].description);
         setCity(data.city.name);
@@ -150,28 +118,20 @@ const FetchData = () => {
         setHumidity(data.list[0].main.humidity);
         setWindspeed(round(parseFloat(data.list[0].wind.speed)*18/5));
         storeData();
-    });
+    })
+    .catch(e=>{
+      document.getElementById('error').value = e.message;
+    })
     },[urlWeather])
-
-    useEffect(() => {
-        fetch(urlCity)
-        .then(response=>response.json())
-        .then(locData=>{
-            console.log(locData);
-        });
-    }, [urlCity])
 
 return (
     <div>
         <header>
-          <datalist id="pastSearches">
-            <option value />
-            <option value />
-            <option value />
-            <option value />
-            <option value />
-          </datalist>
-          <p>Enter city name  <input id="city" type="text" name="city" list="pastSearches" />  <button id="search" onClick={changeLocation}>Search</button></p>
+          <p id='entername'>Enter city name <MapboxAutocomplete 
+                    publicKey={mapboxAPIkey}
+                    inputClass='form-control search'
+                    onSuggestionSelect={_suggestionSelect}
+                    resetSearch={true}/></p>
           <p id="error" />
         </header>
         <div className="main">

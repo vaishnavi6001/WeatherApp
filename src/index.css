@@ -1,12 +1,48 @@
 html {
   font-family: 'Montserrat', sans-serif;
-  background-color: rgb(46, 55, 68);
+  background-image: url("https://wallpaperaccess.com/full/871130.jpg");
   color: white;
 }
 .main {
   display: flex;  
   justify-content: center;
   align-items: center;
+}
+.signin {
+  font-size: 2em;
+  text-align: center;
+  margin-top: 300px; 
+}
+.undersignin {
+  text-align: center;
+}
+.navbar{
+  font-family: 'Montserrat', sans-serif;
+  background-color: rgba(248, 248, 248, 0);
+  color: #e0e7ee;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  margin: 0 auto;
+  border-bottom: 1px solid #ffffff;
+}
+.navbar h1 {
+  color: #ffffff;
+}
+.navbar .links {
+  margin-left: auto;
+}
+.navbar a {
+  margin-left: 16px;
+  text-decoration: none;
+  padding: 6px;
+}
+.navbar a:hover {
+  color: #ffffff;
+}
+.navbar a:visited{
+  color:#e3ebf1;
 }
 header{
   height: 100px;
@@ -38,9 +74,12 @@ h2, h1, p {
 p:first-letter, h1::first-letter, h2:first-letter {
   text-transform: capitalize;
 }
+#entername{
+  font-size: 1.5em;
+}
 .box1 {
   background-color: rgb(36, 194, 241);
-  background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.986),rgba(87, 122, 219, 0.829)), url("https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/rhodeisland/140_3_0527_jpeg_62832804-29ac-4b9d-bd6f-039bc470b818.jpg");
+  background-image: linear-gradient(to bottom right, hsla(187, 91%, 58%, 0.719),rgba(87, 122, 219, 0.692)), url("https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/rhodeisland/140_3_0527_jpeg_62832804-29ac-4b9d-bd6f-039bc470b818.jpg");
   width: 400px;
   height: 550px;
   border-radius: 25px;
@@ -48,16 +87,16 @@ p:first-letter, h1::first-letter, h2:first-letter {
 }
 @keyframes myanimation{
   0%{
-      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.986),rgba(87, 122, 219, 0.829)), url("https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/rhodeisland/140_3_0527_jpeg_62832804-29ac-4b9d-bd6f-039bc470b818.jpg");
-  }
+      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.726),rgba(87, 122, 219, 0.692)), url("https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/rhodeisland/140_3_0527_jpeg_62832804-29ac-4b9d-bd6f-039bc470b818.jpg");
+    }
   25%{
-      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.986),rgba(87, 122, 219, 0.829)), url("https://i.guim.co.uk/img/media/6088d89032f8673c3473567a91157080840a7bb8/413_955_2808_1685/master/2808.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=412cc526a799b2d3fff991129cb8f030");
-  }
+      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.651),rgba(87, 122, 219, 0.692)), url("https://i.guim.co.uk/img/media/6088d89032f8673c3473567a91157080840a7bb8/413_955_2808_1685/master/2808.jpg?width=1200&height=1200&quality=85&auto=format&fit=crop&s=412cc526a799b2d3fff991129cb8f030");
+    }
   50%{
-      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.986),rgba(87, 122, 219, 0.829)), url("https://www.freewalldownload.com/mountain-wallpapers/moon-and-blue-ice-mountains-full-hd-nature-wallpaper-for-laptop.jpg");
-  }
+      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.692),rgba(87, 122, 219, 0.685)), url("https://www.freewalldownload.com/mountain-wallpapers/moon-and-blue-ice-mountains-full-hd-nature-wallpaper-for-laptop.jpg");
+    }
   75%{
-      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.986),rgba(87, 122, 219, 0.829)), url("https://i.pinimg.com/originals/7f/a7/bb/7fa7bb83f07e1eb17e768b3d6dabbef7.jpg");
+      background-image: linear-gradient(to bottom right, rgba(123, 233, 247, 0.664),rgba(87, 122, 219, 0.692)), url("https://i.pinimg.com/originals/7f/a7/bb/7fa7bb83f07e1eb17e768b3d6dabbef7.jpg");
   }
 }
 .b1bottom {
@@ -88,7 +127,7 @@ p:first-letter, h1::first-letter, h2:first-letter {
   padding-left: 0;
 }
 .box2 {
-  background-color: rgb(27, 35, 46);
+  background-color: rgba(44, 60, 82, 0.897);
   width: 450px;
   height: 500px;
   border-radius: 15px;
@@ -118,7 +157,7 @@ span {
   padding-left: 0;
   padding-right: 0;
   border-radius: 10px;
-  background-color: rgb(34, 45, 58);
+  background-color: rgb(63, 75, 90);
   height: 150px;
   width: 100px;
 }
@@ -154,4 +193,32 @@ span {
 }
 footer{
   height: 50px;
+}
+.react-mapbox-ac-menu {
+  text-align: center;
+  z-index: 9999;
+  background-color: rgb(243, 251, 252);
+  padding-left: 0em;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-top: -1.3rem;
+  margin-left: 420px;
+}
+ 
+.react-mapbox-ac-input {
+  margin-bottom: 1.5rem;
+}
+ 
+.react-mapbox-ac-suggestion {
+  color: black;
+  font-size: 18px;
+  margin-bottom: .5rem solid blue;
+  cursor: pointer;
+  padding-left: 0rem;
+  padding-right: 1.5rem;
+  opacity: 1;
+}
+ 
+.react-mapbox-ac-suggestion:hover {
+  background-color: #58a;
 }
