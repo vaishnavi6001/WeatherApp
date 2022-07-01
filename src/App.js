@@ -35,10 +35,10 @@ function App() {
                     cookiePolicy={'single_host_origin'}></GoogleLogin></Link>
             </div> */}
           </nav>
-            {login=="loggedout" && <Route exact path="/" component={Signin}>
+            {/* {login=="loggedout" && <Route exact path="/" component={Signin}>
               <Signin />
-              </Route>}
-            {login=="loggedin" && <Route exact path="/" component={FetchData}>
+              </Route>} */}
+            {<Route exact path="/" component={FetchData}>
               <FetchData />
             </Route>}
         </div>
