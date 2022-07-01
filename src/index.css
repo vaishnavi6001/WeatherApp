@@ -18,7 +18,6 @@ html {
 }
 .navbar{
   font-family: 'Montserrat', sans-serif;
-  background-color: rgba(248, 248, 248, 0);
   color: #e0e7ee;
   padding: 5px;
   display: flex;
